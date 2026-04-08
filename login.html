@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="form-box fade-in">
+  <h2>Login</h2>
+  <input type="text" id="email" placeholder="Email">
+  <input type="password" placeholder="Password">
+
+  <button class="btn" onclick="loginUser()">Login</button>
+</div>
+
+<script>
+function loginUser() {
+  let email = document.getElementById("email").value;
+
+  if(email === "") {
+    alert("Enter email");
+    return;
+  }
+
+  localStorage.setItem("user", email);
+  alert("Login Successful!");
+  window.location.href = "packages.html";
+}
+</script>
+
+</body>
+</html>

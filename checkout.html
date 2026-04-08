@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+  <h2>🧾 Checkout</h2>
+</div>
+
+<div class="form-box">
+
+  <h2>Checkout</h2>
+
+  <!-- THESE IDS MUST MATCH -->
+  <p><b>Package:</b> <span id="pkgName"></span></p>
+  <p><b>Price:</b> ₹<span id="pkgPrice"></span></p>
+
+  <h3>Items:</h3>
+  <ul id="itemList"></ul>
+
+  <p><b>Total:</b> ₹<span id="totalPrice"></span></p>
+
+  <button class="btn" onclick="confirmOrder()">Confirm Order</button>
+
+</div>
+
+<!-- YOUR SCRIPT (KEEP AS IT IS) -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  let packageName = localStorage.getItem("packageName");
+  let packagePrice = localStorage.getItem("packagePrice");
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  let total = 0;
+
+  let pkgNameEl = document.getElementById("pkgName");
+  let pkgPriceEl = document.getElementById("pkgPrice");
+  let list = document.getElementById("itemList");
+  let totalEl = document.getElementById("totalPrice");
+
+  if (!pkgNameEl || !pkgPriceEl || !list || !totalEl) {
+    console.error("Element IDs not found!");
+    return;
+  }
+
+  if (packageName && packagePrice) {
+    pkgNameEl.innerText = packageName;
+    pkgPriceEl.innerText = packagePrice;
+
+    let li = document.createElement("li");
+    li.innerText = packageName + " - ₹" + packagePrice;
+    list.appendChild(li);
+
+    total += parseInt(packagePrice);
+  } else {
+    pkgNameEl.innerText = "None";
+    pkgPriceEl.innerText = "0";
+  }
+
+  cart.forEach(item => {
+    let li = document.createElement("li");
+    li.innerText = item.name + " - ₹" + item.price;
+    list.appendChild(li);
+    total += item.price;
+  });
+
+  totalEl.innerText = total;
+
+});
+
+function confirmOrder() {
+  let total = document.getElementById("totalPrice").innerText;
+
+  if (total == 0) {
+    alert("Cart is empty!");
+    return;
+  }
+
+  alert("Order Confirmed! Total ₹" + total);
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
