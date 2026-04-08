@@ -7,46 +7,61 @@
 </head>
 <body>
 
-<div class="navbar">
-  <h2>🛒 Your Cart</h2>
-</div>
+<div class="navbar"><h2>🛒 Cart</h2></div>
 
 <div class="form-box">
 
-  <h3>Selected Items:</h3>
-  <ul id="cartItems"></ul>
+<ul id="cartItems"></ul>
 
-  <h3>Total: ₹<span id="total"></span></h3>
+<h3>Total: ₹<span id="total"></span></h3>
 
-  <button class="btn" onclick="goToCheckout()">Proceed to Checkout</button>
-  <br><br>
-  <button onclick="clearCart()">Clear Cart</button>
+<button class="btn" onclick="goToPayment()">Proceed to Pay</button>
 
 </div>
 
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let total = 0;
 
-let list = document.getElementById("cartItems");
+function renderCart(){
+  let list = document.getElementById("cartItems");
+  list.innerHTML = "";
+  let total = 0;
 
-cart.forEach(item => {
-  let li = document.createElement("li");
-  li.innerText = item.name + " - ₹" + item.price;
-  list.appendChild(li);
-  total += item.price;
-});
+  cart.forEach((item,i)=>{
+    let li = document.createElement("li");
 
-document.getElementById("total").innerText = total;
+    li.innerHTML = `
+      ${item.name} - ₹${item.price} x ${item.qty}
+      <br>
+      <button onclick="inc(${i})">+</button>
+      <button onclick="dec(${i})">-</button>
+      <hr>
+    `;
 
-function goToCheckout(){
-  window.location.href = "checkout.html";
+    list.appendChild(li);
+    total += item.price * item.qty;
+  });
+
+  document.getElementById("total").innerText = total;
 }
 
-function clearCart(){
-  localStorage.removeItem("cart");
-  location.reload();
+function inc(i){ cart[i].qty++; update(); }
+function dec(i){
+  if(cart[i].qty>1) cart[i].qty--;
+  else cart.splice(i,1);
+  update();
 }
+
+function update(){
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
+}
+
+function goToPayment(){
+  window.location.href="payment.html";
+}
+
+renderCart();
 </script>
 
 </body>
