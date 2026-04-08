@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="form-box fade-in">
+
+  <h2>💳 Complete Payment</h2>
+
+  <p><b>Scan QR to Pay</b></p>
+
+  <!-- QR CODE -->
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=rentnest@upi&pn=RentNest&cu=INR"
+       style="width:200px; margin:10px auto; display:block;">
+
+  <p style="text-align:center;">OR</p>
+
+  <input type="text" id="upi" placeholder="Enter UPI ID (example@upi)">
+
+  <button class="btn" onclick="pay()">Pay Now</button>
+
+</div>
+
+<script>
+function pay(){
+  let upi = document.getElementById("upi").value;
+
+  if(upi === ""){
+    alert("Enter UPI ID or scan QR");
+    return;
+  }
+
+  // simulate payment delay
+  setTimeout(() => {
+    window.location.href = "success.html";
+  }, 1000);
+}
+</script>
+
+</body>
+</html>
